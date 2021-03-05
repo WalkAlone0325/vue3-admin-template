@@ -33,7 +33,7 @@
             >
               <el-dropdown-item>Docs</el-dropdown-item>
             </a>
-            <el-dropdown-item divided @click="$emit('logout')">
+            <el-dropdown-item divided @click="logout">
               <span style="display:block;">Log Out</span>
             </el-dropdown-item>
           </el-dropdown-menu>
@@ -55,7 +55,6 @@ export default defineComponent({
     Breadcrumb,
     Hamburger
   },
-  emits: ["logout"],
   setup() {
     const store = useStore();
     const route = useRoute();

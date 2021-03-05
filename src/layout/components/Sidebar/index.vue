@@ -54,13 +54,14 @@ export default {
     const showLogo = computed(() => store.state.settings.sidebarLogo);
 
     const sidebar = computed(() => store.getters.sidebar);
+    const isCollapse = computed(() => !sidebar.value.opened);
     return {
       sidebar,
       activeMenu,
       routes,
       showLogo,
       variables: computed(() => variables),
-      isCollapse: computed(() => !sidebar.opened)
+      isCollapse
     };
   }
 };
