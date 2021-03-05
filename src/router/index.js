@@ -1,25 +1,61 @@
-import { createRouter, createWebHashHistory } from 'vue-router'
-import Home from '../views/Home.vue'
+import { createRouter, createWebHashHistory } from "vue-router";
+import Layout from "@/layout";
+import Home from "../views/Home.vue";
 
-const routes = [
+export const constantRoutes = [
   {
-    path: '/',
-    name: 'Home',
+    path: "/",
+    name: "Home",
     component: Home
   },
   {
-    path: '/about',
-    name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+    path: "/",
+    component: Layout,
+    redirect: "/dashboard",
+    children: [
+      {
+        path: "dashboard",
+        name: "Dashboard",
+        component: () => import("@/views/dashboard/index"),
+        meta: { title: "Dashboard", icon: "dashboard" }
+      }
+    ]
+  },
+
+  {
+    path: "/form",
+    component: Layout,
+    children: [
+      {
+        path: "index",
+        name: "Form",
+        component: () => import("@/views/form/index"),
+        meta: { title: "Form", icon: "form" }
+      }
+    ]
+  },
+
+  {
+    path: "/external-link",
+    component: Layout,
+    children: [
+      {
+        path: "https://panjiachen.github.io/vue-element-admin-site/#/",
+        meta: { title: "External Link", icon: "link" }
+      }
+    ]
   }
-]
+];
 
 const router = createRouter({
   history: createWebHashHistory(),
-  routes
-})
+  routes: constantRoutes,
+  scrollBehavior: () => ({ y: 0 })
+});
 
-export default router
+export function resetRouter() {
+  const newRouter = createRouter();
+  router.matcher = newRouter.matcher; // reset router
+}
+
+export default router;
