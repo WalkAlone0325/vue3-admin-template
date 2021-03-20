@@ -1,7 +1,6 @@
 <template>
   <div :class="{ 'has-logo': showLogo }">
     <logo v-if="showLogo" :collapse="isCollapse" />
-
     <el-scrollbar wrap-class="scrollbar-wrapper">
       <el-menu
         :default-active="activeMenu"
@@ -25,44 +24,42 @@
 </template>
 
 <script>
-import { useStore } from "vuex";
-import { useRoute, useRouter } from "vue-router";
+import { mapGetters } from "vuex";
 import Logo from "./Logo";
 import SidebarItem from "./SidebarItem";
 import variables from "@/styles/variables.scss";
-import { computed } from "vue";
 
 export default {
-  components: { SidebarItem, Logo },
-  setup() {
-    const route = useRoute();
-    const router = useRouter();
-    const store = useStore();
-
-    // computed
-    const activeMenu = computed(() => {
+  components: {
+    Logo,
+    SidebarItem
+  },
+  computed: {
+    ...mapGetters(["sidebar"]),
+    routes() {
+      // console.log(this.$router);
+      return this.$router.options.routes;
+    },
+    activeMenu() {
+      const route = this.$route;
       const { meta, path } = route;
+      // if set path, the sidebar will highlight the path you set
       if (meta.activeMenu) {
         return meta.activeMenu;
       }
       return path;
-    });
-    const routes = computed(() => {
-      // console.log(router);
-      return router.options.routes;
-    });
-    const showLogo = computed(() => store.state.settings.sidebarLogo);
-
-    const sidebar = computed(() => store.getters.sidebar);
-    const isCollapse = computed(() => !sidebar.value.opened);
-    return {
-      sidebar,
-      activeMenu,
-      routes,
-      showLogo,
-      variables: computed(() => variables),
-      isCollapse
-    };
+    },
+    showLogo() {
+      return this.$store.state.settings.sidebarLogo;
+    },
+    variables() {
+      return variables;
+    },
+    isCollapse() {
+      return !this.sidebar.opened;
+    }
   }
 };
 </script>
+
+<style></style>

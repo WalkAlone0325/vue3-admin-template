@@ -44,39 +44,28 @@
 </template>
 
 <script>
-import { useRoute, useRouter } from "vue-router";
-import { useStore } from "vuex";
+import { mapGetters } from "vuex";
 import Breadcrumb from "@/components/Breadcrumb";
 import Hamburger from "@/components/Hamburger";
-import { computed, defineComponent } from "vue";
 
-export default defineComponent({
+export default {
   components: {
     Breadcrumb,
     Hamburger
   },
-  setup() {
-    const store = useStore();
-    const route = useRoute();
-    const router = useRouter();
-
-    // methods
-    const toggleSideBar = () => {
-      store.dispatch("app/toggleSideBar");
-    };
-    const logout = async () => {
-      await store.dispatch("user/logout");
-      router.push(`/login?redirect=${route.fullPath}`);
-    };
-
-    return {
-      sidebar: computed(() => store.getters.sidebar),
-      avatar: computed(() => store.getters.avatar),
-      toggleSideBar,
-      logout
-    };
+  computed: {
+    ...mapGetters(["sidebar", "avatar"])
+  },
+  methods: {
+    toggleSideBar() {
+      this.$store.dispatch("app/toggleSideBar");
+    },
+    async logout() {
+      await this.$store.dispatch("user/logout");
+      this.$router.push(`/login?redirect=${this.$route.fullPath}`);
+    }
   }
-});
+};
 </script>
 
 <style lang="scss" scoped>

@@ -26,13 +26,19 @@ export default defineComponent({
       default: false
     }
   },
-  setup(_, { emit }) {
-    const toggleClick = () => {
-      emit("toggleClick");
-    };
-
-    return { toggleClick };
+  methods: {
+    toggleClick() {
+      this.$emit("toggleClick");
+    }
   }
+  // setup(_, { emit }) {
+  //   console.log(_, emit);
+  //   const toggleClick = () => {
+  //     emit("toggleClick");
+  //   };
+
+  //   return { toggleClick };
+  // }
 });
 </script>
 

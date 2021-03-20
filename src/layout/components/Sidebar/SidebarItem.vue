@@ -7,31 +7,44 @@
           !item.alwaysShow
       "
     >
-      <app-link v-if="onlyOneChild.meta" :to="resolvePath(onlyOneChild.path)">
+      <app-link
+        v-if="onlyOneChild.meta"
+        :to="resolvePath(onlyOneChild.path)"
+        :class="{ 'submenu-title-noDropdown': !isNest }"
+      >
         <el-menu-item
           :index="resolvePath(onlyOneChild.path)"
           :class="{ 'submenu-title-noDropdown': !isNest }"
         >
-          <item
+          <svg-icon
+            v-if="onlyOneChild.meta.icon"
+            :icon-class="onlyOneChild.meta.icon"
+          ></svg-icon>
+          <i v-else :class="item.children && item.children.meta.icon" />
+          <template #title>{{ onlyOneChild.meta.title }}</template>
+
+          <!-- <item
             :icon="onlyOneChild.meta.icon || (item.meta && item.meta.icon)"
             :title="onlyOneChild.meta.title"
-          />
+          /> -->
         </el-menu-item>
       </app-link>
     </template>
 
     <el-submenu
       v-else
-      ref="subMenu"
+      ref="submenu"
       :index="resolvePath(item.path)"
       popper-append-to-body
     >
       <template #title>
-        <item
+        <i :class="[item.meta.icon, 'sub-el-icon']"></i>
+        <span>{{ item.meta.title }}</span>
+        <!-- <item
           v-if="item.meta"
           :icon="item.meta && item.meta.icon"
           :title="item.meta.title"
-        />
+        /> -->
       </template>
       <sidebar-item
         v-for="child in item.children"
@@ -39,7 +52,7 @@
         :is-nest="true"
         :item="child"
         :base-path="resolvePath(child.path)"
-        class="nest-menu"
+        class="nest-ment"
       />
     </el-submenu>
   </div>
@@ -48,13 +61,14 @@
 <script>
 import path from "path";
 import { isExternal } from "@/utils/validate";
-import Item from "./Item";
+import FixiOSBug from "./FixiOSBug";
 import AppLink from "./Link";
-import FixiOSBug from "./useFixiOSBug";
+import Item from "./Item";
+import { defineComponent } from "vue";
 
-export default {
+export default defineComponent({
   name: "SidebarItem",
-  components: { Item, AppLink },
+  components: { AppLink, Item },
   mixins: [FixiOSBug],
   props: {
     // route object
@@ -110,5 +124,14 @@ export default {
       return path.resolve(this.basePath, routePath);
     }
   }
-};
+});
 </script>
+
+<style scoped>
+.sub-el-icon {
+  color: currentColor;
+  width: 1em;
+  height: 1em;
+  margin-left: 12px;
+}
+</style>

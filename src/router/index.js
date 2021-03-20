@@ -24,6 +24,7 @@ export const constantRoutes = [
         name: "Dashboard",
         component: () => import("@/views/dashboard/index"),
         meta: { title: "Dashboard", icon: "dashboard" }
+        // meta: { title: "Dashboard", icon: "el-icon-s-help" }
       }
     ]
   },
@@ -34,6 +35,7 @@ export const constantRoutes = [
     redirect: "/example/table",
     name: "Example",
     meta: { title: "Example", icon: "el-icon-s-help" },
+    // meta: { title: "Example", icon: "dashboard" },
     children: [
       {
         path: "table",
@@ -59,6 +61,7 @@ export const constantRoutes = [
         name: "Form",
         component: () => import("@/views/form/index"),
         meta: { title: "Form", icon: "form" }
+        // meta: { title: "Example", icon: "el-icon-s-help" }
       }
     ]
   },

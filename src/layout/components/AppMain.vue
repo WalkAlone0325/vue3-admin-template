@@ -1,6 +1,6 @@
 <template>
   <section class="app-main">
-    <router-view v-slot="{ Component }" :key="key">
+    <router-view v-slot="{ Component }">
       <transition name="fade-transform" mode="out-in">
         <component :is="Component" />
       </transition>
@@ -9,16 +9,16 @@
 </template>
 
 <script>
-import { computed } from "vue";
-import { useRoute } from "vue-router";
-export default {
+import { defineComponent } from "vue";
+
+export default defineComponent({
   name: "AppMain",
-  setup() {
-    const route = useRoute();
-    const key = computed(() => route.path);
-    return { key };
+  computed: {
+    key() {
+      return this.$route.path;
+    }
   }
-};
+});
 </script>
 
 <style scoped>

@@ -1,5 +1,5 @@
 <script>
-import { defineComponent } from "vue";
+import { defineComponent, Fragment } from "vue";
 
 export default defineComponent({
   name: "MenuItem",
@@ -14,31 +14,20 @@ export default defineComponent({
     }
   },
   setup(props) {
-    return props => {
-      const { icon, title } = props;
-      const vnodes = [];
-
-      if (icon) {
-        if (icon.includes("el-icon")) {
-          vnodes.push(<i class={[icon, "sub-el-icon"]} />);
-        } else {
-          vnodes.push(<svg-icon icon-class={icon} />);
-        }
-      }
-
-      if (title) {
-        vnodes.push(<span slot="title">{title}</span>);
-      }
-      return vnodes;
-    };
+    return () => (
+      <>
+        {props.icon ? (
+          props.icon.includes("el-icon") ? (
+            <i class={[props.icon, "sub-el-icon"]} />
+          ) : (
+            <svg-icon icon-class={props.icon} />
+          )
+        ) : (
+          ""
+        )}
+        {props.title ? <Fragment v-slots={title}>{props.title}</Fragment> : ""}
+      </>
+    );
   }
 });
 </script>
-
-<style scoped>
-.sub-el-icon {
-  color: currentColor;
-  width: 1em;
-  height: 1em;
-}
-</style>

@@ -18,8 +18,6 @@
 <script>
 import { Navbar, Sidebar, AppMain } from "./components";
 import ResizeMixin from "./mixin/ResizeHandler";
-import { computed } from "vue";
-import { useStore } from "vuex";
 
 export default {
   name: "Layout",
@@ -29,25 +27,29 @@ export default {
     AppMain
   },
   mixins: [ResizeMixin],
-  setup() {
-    const store = useStore();
-
-    const sidebar = computed(() => store.state.app.sidebar);
-    const device = computed(() => store.state.app.device);
-    const fixedHeader = computed(() => store.state.settings.fixedHeader);
-    const classObj = computed(() => {
+  computed: {
+    sidebar() {
+      return this.$store.state.app.sidebar;
+    },
+    device() {
+      return this.$store.state.app.device;
+    },
+    fixedHeader() {
+      return this.$store.state.settings.fixedHeader;
+    },
+    classObj() {
       return {
-        hideSidebar: !sidebar.value.opened,
-        openSidebar: sidebar.value.opened,
-        withoutAnimation: sidebar.value.withoutAnimation,
-        mobile: device.value === "mobile"
+        hideSidebar: !this.sidebar.opened,
+        openSidebar: this.sidebar.opened,
+        withoutAnimation: this.sidebar.withoutAnimation,
+        mobile: this.device === "mobile"
       };
-    });
-    const handleClickOutside = () => {
-      store.dispatch("app/closeSideBar", { withoutAnimation: false });
-    };
-
-    return { fixedHeader, device, classObj, handleClickOutside };
+    }
+  },
+  methods: {
+    handleClickOutside() {
+      this.$store.dispatch("app/closeSideBar", { withoutAnimation: false });
+    }
   }
 };
 </script>

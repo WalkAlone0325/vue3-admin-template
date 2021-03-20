@@ -19,7 +19,6 @@
 </template>
 
 <script>
-import { ref } from "vue";
 export default {
   name: "SidebarLogo",
   props: {
@@ -28,12 +27,11 @@ export default {
       required: true
     }
   },
-  setup() {
+  data() {
     return {
-      title: ref("Vue Admin Template"),
-      logo: ref(
+      title: "Vue Admin Template",
+      logo:
         "https://wpimg.wallstcn.com/69a1c46c-eb1c-4b46-8bd4-e9e686ef5251.png"
-      )
     };
   }
 };

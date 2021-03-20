@@ -6,7 +6,6 @@
 
 <script>
 import { isExternal } from "@/utils/validate";
-import { computed } from "vue";
 
 export default {
   props: {
@@ -15,32 +14,32 @@ export default {
       required: true
     }
   },
-  setup(props) {
-    const isExternals = computed(() => isExternal(props.to));
-    const type = computed(() => {
-      if (isExternals.value) {
+  computed: {
+    isExternal() {
+      return isExternal(this.to);
+    },
+    type() {
+      if (this.isExternal) {
         return "a";
       }
       return "router-link";
-    });
-
-    // methods
-    const linkProps = to => {
-      if (isExternals.value) {
+    }
+  },
+  methods: {
+    linkProps(to) {
+      if (this.isExternal) {
         return {
           href: to,
           target: "_blank",
           rel: "noopener"
         };
       }
-      return { to };
-    };
-
-    return {
-      isExternals,
-      type,
-      linkProps
-    };
+      return {
+        to: to
+      };
+    }
   }
 };
 </script>
+
+<style></style>
